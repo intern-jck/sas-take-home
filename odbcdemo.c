@@ -34,6 +34,7 @@ void ODBC_error(                 /* Get and print ODBC error messages */
     SQLSMALLINT actualmsglen;
     RETCODE rc;
 loop:
+
     rc = SQLError(henv, hdbc, hstmt,
                   (SQLCHAR *)sqlstate, &nativeerr, (SQLCHAR *)errmsg,
                   SQL_MAX_MESSAGE_LENGTH - 1, &actualmsglen);
@@ -123,6 +124,7 @@ int main(int argc, char *argv[])
     UCHAR driver[DSN_LEN];
     UCHAR ver[32];
     SQLSMALLINT strLen;
+
     int i;
     uid[0] = 0;
     pwd[0] = 0;
@@ -209,7 +211,7 @@ int main(int argc, char *argv[])
     rc = SQLBindCol(hstmt, 4, SQL_C_CHAR,
                     &dataStruct2[0].charCol1[0],
                     (SDWORD)sizeof(dataStruct2[0].charCol1),
-                    (SQLLEN *)&dataStruct2[0].length1);
+                    (SQLLEN *)&dataStruct2[0].length1); // length1 is type long
 
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
     {
