@@ -37,11 +37,13 @@ loop:
     rc = SQLError(henv, hdbc, hstmt,
                   (SQLCHAR *)sqlstate, &nativeerr, (SQLCHAR *)errmsg,
                   SQL_MAX_MESSAGE_LENGTH - 1, &actualmsglen);
+                  
     if (rc == SQL_ERROR)
     {
         printf("SQLError failed!\n");
         return;
     }
+
     if (rc != SQL_NO_DATA_FOUND)
     {
         printf("SQLSTATE = %s\n", sqlstate);
@@ -133,10 +135,13 @@ int main(int argc, char *argv[])
 
     printf("\nEnter the DSN : ");
     fgets_wrapper((char *)driver, DSN_LEN);
+
     printf("\nEnter the UID : ");
     fgets_wrapper((char *)uid, UID_LEN);
+
     printf("\nEnter the PWD : ");
     fgets_wrapper((char *)pwd, PWD_LEN);
+
     printf("%s: will connect to data source '%s' as user '%s/%s'.\n",
            argv[0], driver, uid, pwd);
 
@@ -175,6 +180,7 @@ int main(int argc, char *argv[])
         printf("SQLGetInfo has Failed. RC=%d\n", rc);
         ODBC_error(henv, hdbc, hstmt);
     }
+
     printf("Driver version: %s\n", ver);
     printf("Calling SQLGetTypeInfo...\n");
 
@@ -191,6 +197,7 @@ int main(int argc, char *argv[])
                     &dataStruct[0].charCol1[0],
                     (SDWORD)sizeof(dataStruct[0].charCol1),
                     (SQLLEN *)&dataStruct[0].length1);
+
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
     {
         printf("SQLBindCol(1) has Failed. RC=%d\n", rc);
@@ -203,6 +210,7 @@ int main(int argc, char *argv[])
                     &dataStruct2[0].charCol1[0],
                     (SDWORD)sizeof(dataStruct2[0].charCol1),
                     (SQLLEN *)&dataStruct2[0].length1);
+
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
     {
         printf("SQLBindCol(4) has Failed. RC=%d\n", rc);
@@ -215,6 +223,7 @@ int main(int argc, char *argv[])
                     &dataStruct3[0].charCol1[0],
                     (SDWORD)sizeof(dataStruct3[0].charCol1),
                     (SQLLEN *)&dataStruct3[0].length1);
+
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
     {
         printf("SQLBindCol(5) has Failed. RC=%d\n", rc);
@@ -272,6 +281,7 @@ int main(int argc, char *argv[])
         printf("indicator(d): %d\n", dataStruct[0].length1);
         printf("indicator(lld): %lld\n", dataStruct[0].length1);
         printf("indicator(hex): ");
+
         /* assign to char so we can dump out each byte */
         ptr = (char *)&dataStruct[0].length1;
 
@@ -282,6 +292,7 @@ int main(int argc, char *argv[])
 
         printf("\n");
         printf("%-32s\n\n", dataStruct[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL" : dataStruct[0].charCol1);
+        
         dataStruct[0].length1 = -1;
         dataStruct2[0].length1 = -1;
         dataStruct3[0].length1 = -1;
@@ -300,7 +311,7 @@ int main(int argc, char *argv[])
         ODBC_error(henv, hdbc, hstmt);
         goto end;
     }
-    
+
 /*
 ** Free Bind Buffers
 */
