@@ -41,15 +41,36 @@ void ODBC_error(                 /* Get and print ODBC error messages */
     SQLSMALLINT actualmsglen;
     RETCODE rc;
 loop:
-
-    rc = SQLError(henv,
-                  hdbc,
-                  hstmt,
-                  (SQLCHAR *)sqlstate,
-                  &nativeerr,
-                  (SQLCHAR *)errmsg,
-                  SQL_MAX_MESSAGE_LENGTH - 1,
-                  &actualmsglen);
+    // SQLError is depreciated
+    // Use SQLGetDiagRec()
+    // rc = SQLError(henv,
+    //               hdbc,
+    //               hstmt,
+    //               (SQLCHAR *)sqlstate,
+    //               &nativeerr,
+    //               (SQLCHAR *)errmsg,
+    //               SQL_MAX_MESSAGE_LENGTH - 1,
+    //               &actualmsglen);
+    /*
+    SQLRETURN SQLGetDiagRec(
+     SQLSMALLINT     HandleType,
+     SQLHANDLE       Handle,
+     SQLSMALLINT     RecNumber,
+     SQLCHAR *       SQLState,
+     SQLINTEGER *    NativeErrorPtr,
+     SQLCHAR *       MessageText,
+     SQLSMALLINT     BufferLength,
+     SQLSMALLINT *   TextLengthPtr);
+    */
+    rc = SQLGetDiagRec(
+        SQL_HANDLE_ENV,
+        hdbc,
+        1,
+        (SQLCHAR *)sqlstate,
+        &nativeerr,
+        (SQLCHAR *)errmsg,
+        SQL_MAX_MESSAGE_LENGTH - 1,
+        &actualmsglen);
 
     if (rc == SQL_ERROR)
     {
@@ -57,7 +78,8 @@ loop:
         return;
     }
 
-    if (rc != SQL_NO_DATA_FOUND)
+    // if (rc != SQL_NO_DATA_FOUND)
+    if (rc != SQL_NO_DATA)
     {
         printf("SQLSTATE = %s\n", sqlstate);
         printf("NATIVE ERROR = %d\n", nativeerr);
@@ -171,18 +193,6 @@ int main(int argc, char *argv[])
                        (SQLPOINTER)SQL_OV_ODBC3,
                        SQL_IS_INTEGER);
 
-    // needs more arguemnts
-    /*
-    SQLRETURN SQLConnect(
-        SQLHDBC        ConnectionHandle,
-        SQLCHAR *      ServerName,
-        SQLSMALLINT    NameLength1,
-        SQLCHAR *      UserName,
-        SQLSMALLINT    NameLength2,
-        SQLCHAR *      Authentication,
-        SQLSMALLINT    NameLength3);
-    */
-    // missing ServerName, NameLength1
     rc = SQLConnect(hdbc,
                     (SQLCHAR *)driver,
                     SQL_NTS,
@@ -242,7 +252,7 @@ int main(int argc, char *argv[])
     rc = SQLBindCol(hstmt, 4, SQL_C_CHAR,
                     &dataStruct2[0].charCol1[0],
                     (SDWORD)sizeof(dataStruct2[0].charCol1),
-                    (SQLLEN *)&dataStruct2[0].length1); // length1 is type long
+                    (SQLLEN *)&dataStruct2[0].length1);
 
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
     {
