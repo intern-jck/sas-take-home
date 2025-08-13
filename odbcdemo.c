@@ -182,8 +182,10 @@ int main(int argc, char *argv[])
         SQLCHAR *      Authentication,
         SQLSMALLINT    NameLength3);
     */
-   // missing ServerName, NameLength1
+    // missing ServerName, NameLength1
     rc = SQLConnect(hdbc,
+                    (SQLCHAR *)driver,
+                    SQL_NTS,
                     (SQLCHAR *)uid,
                     SQL_NTS,
                     (SQLCHAR *)pwd,
