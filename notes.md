@@ -20,7 +20,10 @@ SQLAllocHandle
 https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlallochandle-function?view=sql-server-ver17
 
 SQLSetEnvAttr
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlsetenvattr-function?view=sql-server-ver17
+
 SQLConnect
+
 SQLGetInfo
 SQLGetTypeInfo
 SQLBindCol

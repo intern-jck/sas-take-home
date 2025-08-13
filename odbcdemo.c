@@ -137,47 +137,64 @@ int main(int argc, char *argv[])
     UCHAR ver[32];
     SQLSMALLINT strLen;
 
-    //     int i;
-    //     uid[0] = 0;
-    //     pwd[0] = 0;
+    int i;
+    uid[0] = 0;
+    pwd[0] = 0;
 
-    //     if (argc > 1)
-    //     {
-    //         printf(USAGE_MSG1, argv[0]);
-    //         return (1);
-    //     }
+    if (argc > 1)
+    {
+        printf(USAGE_MSG1, argv[0]);
+        return (1);
+    }
 
-    //     printf("\nEnter the DSN : ");
-    //     fgets_wrapper((char *)driver, DSN_LEN);
+    printf("\nEnter the DSN : ");
+    fgets_wrapper((char *)driver, DSN_LEN);
 
-    //     printf("\nEnter the UID : ");
-    //     fgets_wrapper((char *)uid, UID_LEN);
+    printf("\nEnter the UID : ");
+    fgets_wrapper((char *)uid, UID_LEN);
 
-    //     printf("\nEnter the PWD : ");
-    //     fgets_wrapper((char *)pwd, PWD_LEN);
+    printf("\nEnter the PWD : ");
+    fgets_wrapper((char *)pwd, PWD_LEN);
 
-    //     printf("%s: will connect to data source '%s' as user '%s/%s'.\n",
-    //            argv[0], driver, uid, pwd);
+    printf("%s: will connect to data source '%s' as user '%s/%s'.\n",
+           argv[0], driver, uid, pwd);
 
-    //     rc = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("Unable to allocate environment\n");
-    //         exit(255);
-    //     }
+    rc = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("Unable to allocate environment\n");
+        exit(255);
+    }
 
-    //     rc = SQLSetEnvAttr(henv,
-    //                        SQL_ATTR_ODBC_VERSION,
-    //                        (SQLPOINTER)SQL_OV_ODBC3,
-    //                        SQL_IS_INTEGER);
+    rc = SQLSetEnvAttr(henv,
+                       SQL_ATTR_ODBC_VERSION,
+                       (SQLPOINTER)SQL_OV_ODBC3,
+                       SQL_IS_INTEGER);
 
-    //     rc = SQLConnect(hdbc, (SQLCHAR *)uid, SQL_NTS, (SQLCHAR *)pwd, SQL_NTS);
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLConnect: Failed...\n");
-    //         ODBC_error(henv, hdbc, SQL_NULL_HSTMT);
-    //         exit(255); /* Exit with failure */
-    //     }
+    // needs more arguemnts
+    /*
+    SQLRETURN SQLConnect(
+        SQLHDBC        ConnectionHandle,
+        SQLCHAR *      ServerName,
+        SQLSMALLINT    NameLength1,
+        SQLCHAR *      UserName,
+        SQLSMALLINT    NameLength2,
+        SQLCHAR *      Authentication,
+        SQLSMALLINT    NameLength3);
+    */
+   // missing ServerName, NameLength1
+    rc = SQLConnect(hdbc,
+                    (SQLCHAR *)uid,
+                    SQL_NTS,
+                    (SQLCHAR *)pwd,
+                    SQL_NTS);
+
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLConnect: Failed...\n");
+        ODBC_error(henv, hdbc, SQL_NULL_HSTMT);
+        exit(255); /* Exit with failure */
+    }
 
     //     rc = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
     //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
