@@ -7,6 +7,11 @@
 
 Take home assignment for SAS final round
 
+Compile using gcc on Windows 11
+```
+gcc .\odbcdemo.c -o odbcdemo -lodbc32
+```
+
 Repo answers the following questions.
 
 
@@ -20,6 +25,61 @@ Question 2:
 
 Using the Microsoft ODBC API Reference please find the issues with the following c based odbc demo application.
 
+Issues Found
+* formatted code for better readability
+    * added spaces between blocks of code
+    * formatted for column width of about 80
+    
+* added some haeder files which were missing
+```
+    #include <windows.h>
+    #include <stdint.h>
+    #include <sql.h>
+    #include <sqlext.h>
+    #include <sqltypes.h>
+```
+
+* added a few missing params in SQLConnect()
+    * used driver for ServerName and SQL_NTS for NameLength1
+
+
+
 MS ODBC API reference:
 
 https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/odbc-api-reference?view=sql-server-ver16
+
+
+Function References
+
+Useful links for ODBC Api references
+
+C Date Types
+https://learn.microsoft.com/en-us/sql/odbc/reference/appendixes/c-data-types?view=sql-server-ver17
+
+SQLError Function
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlerror-function?view=sql-server-ver17
+
+SQLHANDLE
+https://learn.microsoft.com/en-us/sql/odbc/reference/develop-app/handles?view=sql-server-ver17
+
+SQLDisconnect
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqldisconnect-function?view=sql-server-ver17
+
+SQLFreeHandle
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlfreehandle-function?view=sql-server-ver16
+
+SQLAllocHandle
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlallochandle-function?view=sql-server-ver17
+
+SQLSetEnvAttr
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlsetenvattr-function?view=sql-server-ver17
+
+SQLConnect
+
+SQLGetInfo
+SQLGetTypeInfo
+SQLBindCol
+EnvClose
+SQLFetch
+SQLFreeStmt
+
