@@ -198,14 +198,14 @@ int main(int argc, char *argv[])
         exit(255); /* Exit with failure */
     }
 
-    //     rc = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("Unable to Allocate a SQLHANDLE:\n");
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         EnvClose(henv, hdbc);
-    //         exit(255);
-    //     }
+    // rc = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
+    // if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    // {
+    //     printf("Unable to Allocate a SQLHANDLE:\n");
+    //     ODBC_error(henv, hdbc, hstmt);
+    //     EnvClose(henv, hdbc);
+    //     exit(255);
+    // }
 
     //     rc = SQLGetInfo(hdbc, SQL_DRIVER_VER, (SQLPOINTER)ver, sizeof(ver), &strLen);
     //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
