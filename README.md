@@ -42,6 +42,8 @@ Issues Found
 * added a few missing params in SQLConnect()
     * used driver for ServerName and SQL_NTS for NameLength1
 
+* SQLError is depreciated in ODBC 3.0
+    * Replaced with SQLGetDiagRec
 
 
 MS ODBC API reference:
@@ -54,8 +56,11 @@ Function References
 C Data Types
 https://learn.microsoft.com/en-us/sql/odbc/reference/appendixes/c-data-types?view=sql-server-ver17
 
-SQLError Function
+SQLError DEPRECIATED IN ODBC 3.0
 https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlerror-function?view=sql-server-ver17
+
+SQLGetDiagRec
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlgetdiagrec-function?view=sql-server-ver17
 
 SQLHANDLE
 https://learn.microsoft.com/en-us/sql/odbc/reference/develop-app/handles?view=sql-server-ver17
