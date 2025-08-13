@@ -51,9 +51,7 @@ https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/odbc-api-reference?v
 
 Function References
 
-Useful links for ODBC Api references
-
-C Date Types
+C Data Types
 https://learn.microsoft.com/en-us/sql/odbc/reference/appendixes/c-data-types?view=sql-server-ver17
 
 SQLError Function
@@ -75,11 +73,21 @@ SQLSetEnvAttr
 https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlsetenvattr-function?view=sql-server-ver17
 
 SQLConnect
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlconnect-function?view=sql-server-ver17
 
 SQLGetInfo
-SQLGetTypeInfo
-SQLBindCol
-EnvClose
-SQLFetch
-SQLFreeStmt
+https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/sqlgetinfo-function?view=sql-server-ver17
 
+SQLGetTypeInfo
+
+
+SQLBindCol
+
+
+EnvClose
+
+
+SQLFetch
+
+
+SQLFreeStmt

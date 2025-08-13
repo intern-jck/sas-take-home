@@ -207,150 +207,150 @@ int main(int argc, char *argv[])
         exit(255);
     }
 
-    //     rc = SQLGetInfo(hdbc, SQL_DRIVER_VER, (SQLPOINTER)ver, sizeof(ver), &strLen);
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLGetInfo has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //     }
+    rc = SQLGetInfo(hdbc, SQL_DRIVER_VER, (SQLPOINTER)ver, sizeof(ver), &strLen);
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLGetInfo has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+    }
 
-    //     printf("Driver version: %s\n", ver);
-    //     printf("Calling SQLGetTypeInfo...\n");
+    printf("Driver version: %s\n", ver);
+    printf("Calling SQLGetTypeInfo...\n");
 
-    //     rc = SQLGetTypeInfo((SQLHSTMT)hstmt, SQL_ALL_TYPES);
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLGetTypeInfo has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         EnvClose(henv, hdbc);
-    //         exit(255);
-    //     }
+    rc = SQLGetTypeInfo((SQLHSTMT)hstmt, SQL_ALL_TYPES);
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLGetTypeInfo has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+        EnvClose(henv, hdbc);
+        exit(255);
+    }
 
-    //     rc = SQLBindCol(hstmt, 1, SQL_C_CHAR,
-    //                     &dataStruct[0].charCol1[0],
-    //                     (SDWORD)sizeof(dataStruct[0].charCol1),
-    //                     (SQLLEN *)&dataStruct[0].length1);
+    rc = SQLBindCol(hstmt, 1, SQL_C_CHAR,
+                    &dataStruct[0].charCol1[0],
+                    (SDWORD)sizeof(dataStruct[0].charCol1),
+                    (SQLLEN *)&dataStruct[0].length1);
 
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLBindCol(1) has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         EnvClose(henv, hdbc);
-    //         exit(255);
-    //     }
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLBindCol(1) has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+        EnvClose(henv, hdbc);
+        exit(255);
+    }
 
-    //     rc = SQLBindCol(hstmt, 4, SQL_C_CHAR,
-    //                     &dataStruct2[0].charCol1[0],
-    //                     (SDWORD)sizeof(dataStruct2[0].charCol1),
-    //                     (SQLLEN *)&dataStruct2[0].length1); // length1 is type long
+    rc = SQLBindCol(hstmt, 4, SQL_C_CHAR,
+                    &dataStruct2[0].charCol1[0],
+                    (SDWORD)sizeof(dataStruct2[0].charCol1),
+                    (SQLLEN *)&dataStruct2[0].length1); // length1 is type long
 
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLBindCol(4) has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         EnvClose(henv, hdbc);
-    //         exit(255);
-    //     }
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLBindCol(4) has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+        EnvClose(henv, hdbc);
+        exit(255);
+    }
 
-    //     rc = SQLBindCol(hstmt, 5, SQL_C_CHAR,
-    //                     &dataStruct3[0].charCol1[0],
-    //                     (SDWORD)sizeof(dataStruct3[0].charCol1),
-    //                     (SQLLEN *)&dataStruct3[0].length1);
+    rc = SQLBindCol(hstmt, 5, SQL_C_CHAR,
+                    &dataStruct3[0].charCol1[0],
+                    (SDWORD)sizeof(dataStruct3[0].charCol1),
+                    (SQLLEN *)&dataStruct3[0].length1);
 
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLBindCol(5) has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         EnvClose(henv, hdbc);
-    //         exit(255);
-    //     }
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLBindCol(5) has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+        EnvClose(henv, hdbc);
+        exit(255);
+    }
 
-    //     // Set to bogus
-    //     dataStruct[0].length1 = -1;
-    //     dataStruct2[0].length1 = -1;
-    //     dataStruct3[0].length1 = -1;
+    // Set to bogus
+    dataStruct[0].length1 = -1;
+    dataStruct2[0].length1 = -1;
+    dataStruct3[0].length1 = -1;
 
-    //     int count = 0;
+    int count = 0;
 
-    //     printf("Fetching result set...\n");
-    //     while (SQLFetch(hstmt) == SQL_SUCCESS)
-    //     {
-    //         char *ptr;
-    //         if (count == 0)
-    //         {
-    //             printf("LITERAL PREFIX\n");
-    //             printf("indicator(d): %d\n", dataStruct2[0].length1);
-    //             printf("indicator(lld): %lld\n", dataStruct2[0].length1);
-    //             printf("indicator(hex): ");
+    printf("Fetching result set...\n");
+    while (SQLFetch(hstmt) == SQL_SUCCESS)
+    {
+        char *ptr;
+        if (count == 0)
+        {
+            printf("LITERAL PREFIX\n");
+            printf("indicator(d): %d\n", dataStruct2[0].length1);
+            printf("indicator(lld): %lld\n", dataStruct2[0].length1);
+            printf("indicator(hex): ");
 
-    //             /* assign to char so we can dump out each byte */
-    //             ptr = (char *)&dataStruct2[0].length1;
+            /* assign to char so we can dump out each byte */
+            ptr = (char *)&dataStruct2[0].length1;
 
-    //             for (i = 0; i < 8; i++)
-    //             {
-    //                 printf("%x", ptr[i]);
-    //             }
-    //             printf("\n");
-    //             printf("%-32s\n\n", dataStruct2[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL"
-    //                                                                         : dataStruct2[0].charCol1);
-    //             printf("LITERAL SUFFIX\n");
-    //             printf("indicator(d): %d\n", dataStruct3[0].length1);
-    //             printf("indicator(lld): %lld\n", dataStruct3[0].length1);
-    //             printf("indicator(hex): ");
+            for (i = 0; i < 8; i++)
+            {
+                printf("%x", ptr[i]);
+            }
+            printf("\n");
+            printf("%-32s\n\n", dataStruct2[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL"
+                                                                        : dataStruct2[0].charCol1);
 
-    //             /* assign to char so we can dump out each byte */
-    //             ptr = (char *)&dataStruct3[0].length1;
+            printf("LITERAL SUFFIX\n");
+            printf("indicator(d): %d\n", dataStruct3[0].length1);
+            printf("indicator(lld): %lld\n", dataStruct3[0].length1);
+            printf("indicator(hex): ");
 
-    //             for (i = 0; i < 8; i++)
-    //             {
-    //                 printf("%x", ptr[i]);
-    //             }
+            /* assign to char so we can dump out each byte */
+            ptr = (char *)&dataStruct3[0].length1;
 
-    //             printf("\n");
-    //             printf("%-32s\n\n", dataStruct3[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL"
-    //                                                                         : dataStruct3[0].charCol1);
-    //         }
+            for (i = 0; i < 8; i++)
+            {
+                printf("%x", ptr[i]);
+            }
+            printf("\n");
+            printf("%-32s\n\n", dataStruct3[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL"
+                                                                        : dataStruct3[0].charCol1);
+        }
 
-    //         printf("indicator(d): %d\n", dataStruct[0].length1);
-    //         printf("indicator(lld): %lld\n", dataStruct[0].length1);
-    //         printf("indicator(hex): ");
+        printf("indicator(d): %d\n", dataStruct[0].length1);
+        printf("indicator(lld): %lld\n", dataStruct[0].length1);
+        printf("indicator(hex): ");
 
-    //         /* assign to char so we can dump out each byte */
-    //         ptr = (char *)&dataStruct[0].length1;
+        /* assign to char so we can dump out each byte */
+        ptr = (char *)&dataStruct[0].length1;
 
-    //         for (i = 0; i < 8; i++)
-    //         {
-    //             printf("%x", ptr[i]);
-    //         }
+        for (i = 0; i < 8; i++)
+        {
+            printf("%x", ptr[i]);
+        }
 
-    //         printf("\n");
-    //         printf("%-32s\n\n", dataStruct[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL" : dataStruct[0].charCol1);
+        printf("\n");
+        printf("%-32s\n\n", dataStruct[0].length1 == SQL_NULL_DATA ? (UCHAR *)"NULL" : dataStruct[0].charCol1);
 
-    //         dataStruct[0].length1 = -1;
-    //         dataStruct2[0].length1 = -1;
-    //         dataStruct3[0].length1 = -1;
-    //         count++;
-    //     }
+        dataStruct[0].length1 = -1;
+        dataStruct2[0].length1 = -1;
+        dataStruct3[0].length1 = -1;
+        count++;
+    }
 
-    //     if (rc == SQL_NO_DATA_FOUND)
-    //     {
-    //         printf("SQLFetch returns: SQL_NO_DATA_FOUND\n");
-    //         goto end;
-    //     }
+    if (rc == SQL_NO_DATA_FOUND)
+    {
+        printf("SQLFetch returns: SQL_NO_DATA_FOUND\n");
+        goto end;
+    }
 
-    //     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
-    //     {
-    //         printf("SQLFetch has Failed. RC=%d\n", rc);
-    //         ODBC_error(henv, hdbc, hstmt);
-    //         goto end;
-    //     }
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("SQLFetch has Failed. RC=%d\n", rc);
+        ODBC_error(henv, hdbc, hstmt);
+        goto end;
+    }
 
-    // /*
-    // ** Free Bind Buffers
-    // */
-    // end:
-    //     rc = SQLFreeStmt(hstmt, SQL_UNBIND);
-    //     EnvClose(henv, hdbc);
+/*
+** Free Bind Buffers
+*/
+end:
+    rc = SQLFreeStmt(hstmt, SQL_UNBIND);
+    EnvClose(henv, hdbc);
 
     return 0;
 }
