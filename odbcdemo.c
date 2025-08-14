@@ -115,14 +115,17 @@ loop:
 **
 ** Arguments: henv _ environment handle
 ** hdbc - connection to handle
+** hstmt - connection to statment
 */
 
-void EnvClose(SQLHANDLE henv, SQLHANDLE hdbc)
+// Good practice to free statement handle as well as other handles
+// void EnvClose(SQLHANDLE henv, SQLHANDLE hdbc)
+void EnvClose(SQLHANDLE henv, SQLHANDLE hdbc, SQLHANDLE hstmt)
 {
     SQLDisconnect(hdbc);
-    // need to also free stmt handle
     SQLFreeHandle(SQL_HANDLE_DBC, hdbc);
     SQLFreeHandle(SQL_HANDLE_ENV, henv);
+    SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
 }
 
 /*
@@ -204,11 +207,8 @@ int main(int argc, char *argv[])
     // pwd[0] = 0;
 
     // Should also expliciting define handle types
-    // SQLHDBC
     SQLHDBC hdbc = NULL;
-    // SQLHENV
     SQLHENV henv = NULL;
-    // SQLHSTMT
     SQLHSTMT hstmt = NULL;
     RETCODE rc = -1;
     UCHAR uid[UID_LEN] = {0};
@@ -259,6 +259,15 @@ int main(int argc, char *argv[])
                        SQL_IS_INTEGER);
 
     // Must allocate connection handle before connecting
+    rc = SQLAllocHandle(SQL_HANDLE_DBC, henv, &hdbc);
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO))
+    {
+        printf("Unable to allocate connection\n");
+        // use EXIT_FAILURE code, 255 is not very clear
+        // exit(255);
+        exit(EXIT_FAILURE);
+    }
+
     rc = SQLConnect(hdbc,
                     (SQLCHAR *)driver,
                     SQL_NTS,
@@ -280,7 +289,7 @@ int main(int argc, char *argv[])
     {
         printf("Unable to Allocate a SQLHANDLE:\n");
         ODBC_error(henv, hdbc, hstmt);
-        EnvClose(henv, hdbc);
+        EnvClose(henv, hdbc, hstmt);
         // exit(255);
         exit(EXIT_FAILURE);
     }
@@ -300,7 +309,7 @@ int main(int argc, char *argv[])
     {
         printf("SQLGetTypeInfo has Failed. RC=%d\n", rc);
         ODBC_error(henv, hdbc, hstmt);
-        EnvClose(henv, hdbc);
+        EnvClose(henv, hdbc, hstmt);
         // exit(255);
         exit(EXIT_FAILURE);
     }
@@ -314,7 +323,7 @@ int main(int argc, char *argv[])
     {
         printf("SQLBindCol(1) has Failed. RC=%d\n", rc);
         ODBC_error(henv, hdbc, hstmt);
-        EnvClose(henv, hdbc);
+        EnvClose(henv, hdbc, hstmt);
         // exit(255);
         exit(EXIT_FAILURE);
     }
@@ -328,7 +337,7 @@ int main(int argc, char *argv[])
     {
         printf("SQLBindCol(4) has Failed. RC=%d\n", rc);
         ODBC_error(henv, hdbc, hstmt);
-        EnvClose(henv, hdbc);
+        EnvClose(henv, hdbc, hstmt);
         // exit(255);
         exit(EXIT_FAILURE);
     }
@@ -342,7 +351,7 @@ int main(int argc, char *argv[])
     {
         printf("SQLBindCol(5) has Failed. RC=%d\n", rc);
         ODBC_error(henv, hdbc, hstmt);
-        EnvClose(henv, hdbc);
+        EnvClose(henv, hdbc, hstmt);
         // exit(255);
         exit(EXIT_FAILURE);
     }
@@ -463,10 +472,9 @@ int main(int argc, char *argv[])
 ** Free Bind Buffers
 */
 end:
-    // This should be in EnvClose()
-    // Also, nothing is done with rc.
-    rc = SQLFreeStmt(hstmt, SQL_UNBIND);
-    EnvClose(henv, hdbc);
-
+    // SQLFreeStmt is depreciated in ODBC v3.x
+    // Also, this will only release the binding, not free the handle 
+    // rc = SQLFreeStmt(hstmt, SQL_UNBIND);
+    EnvClose(henv, hdbc, hstmt);
     return 0;
 }

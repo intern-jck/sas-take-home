@@ -3,7 +3,7 @@
 #include <string.h>
 #include <strings.h>
 
-#include "dbms_query.h"
+#include "dbms_substring.h"
 
 #define MAX_QUERY_SIZE 1024
 
