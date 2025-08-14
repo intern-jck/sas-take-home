@@ -30,7 +30,7 @@ Issues Found
     * added spaces between blocks of code
     * formatted for column width of about 80
     
-* added some haeder files which were missing
+* added some header files which were missing
 ```
     #include <windows.h>
     #include <stdint.h>
@@ -45,6 +45,37 @@ Issues Found
 * SQLError is depreciated in ODBC 3.0
     * Replaced with SQLGetDiagRec
 
+
+Notes and Comments
+
+* Defining `NULL` is not needed since it's defined in `stdlib.h` and `stdio.h'
+```
+#if !defined(NULL)
+#define NULL 0
+#endif
+```
+
+* `ODBC_error()`
+    * `nativeerr` `actualmsglen` `rc` should be initialized to 0
+    * code in `loop` could be written using a `while` loop. 
+    For example:
+    ```
+    while(rc != SQL_ERROR) {
+        rc = SQLGetDiagRec()
+        if (rc == SQL_NO_DATA) {
+            break;
+        }
+        // do logic
+    }
+    printf("SQLError failed!\n");
+    return;
+    ```
+    * Function should also return error code
+
+* `fgets_wrapper()`
+    * Since the buffer is passed as a pointer, it doesn't need to return anything.
+
+* `USAGE_MSG1`
 
 MS ODBC API reference:
 
