@@ -46,37 +46,6 @@ Issues Found
     * Replaced with SQLGetDiagRec
 
 
-Notes and Comments
-
-* Defining `NULL` is not needed since it's defined in `stdlib.h` and `stdio.h'
-```
-#if !defined(NULL)
-#define NULL 0
-#endif
-```
-
-* `ODBC_error()`
-    * `nativeerr` `actualmsglen` `rc` should be initialized to 0
-    * code in `loop` could be written using a `while` loop. 
-    For example:
-    ```
-    while(rc != SQL_ERROR) {
-        rc = SQLGetDiagRec()
-        if (rc == SQL_NO_DATA) {
-            break;
-        }
-        // do logic
-    }
-    printf("SQLError failed!\n");
-    return;
-    ```
-    * Function should also return error code
-
-* `fgets_wrapper()`
-    * Since the buffer is passed as a pointer, it doesn't need to return anything.
-
-* `USAGE_MSG1`
-
 MS ODBC API reference:
 
 https://learn.microsoft.com/en-us/sql/odbc/reference/syntax/odbc-api-reference?view=sql-server-ver16

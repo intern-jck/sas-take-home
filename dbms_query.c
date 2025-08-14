@@ -1,37 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
 #include <string.h>
+#include <strings.h>
 
 #include "dbms_query.h"
 
-char* DBMS1_substr(char *query);
-char* DBMS2_substring(char *query);
-char* DBMS3_sbstr(char *query);
+#define MAX_QUERY_SIZE 1024
 
-char* dbms_get_substring(char *query, enum DBMS_TYPE dbms)
+// Example for SQL Server
+static void DBMS_substring(char *query, char *str, int start, int length)
+{
+    snprintf(query, MAX_QUERY_SIZE, "SUBSTRING(%s, %d, %d)", str, start, length);
+};
+
+// Example for MYSQL
+static void DBMS2_substr(char *query, char *str, int start, int length) {
+    if (length == NULL) {
+        snprintf(query, MAX_QUERY_SIZE, "SUBSTRING(%s, %d)", str, start);
+    } else {
+        snprintf(query, MAX_QUERY_SIZE, "SUBSTRING(%s, %d, %d)", str, start, length);
+    }
+}
+
+// Example for Postgres
+static void DBMS3_sbstr(char *query, char *str, int start, int length) {
+    if (length == NULL) {
+        snprintf(query, MAX_QUERY_SIZE, "SUBSTRING(%s FROM %d)", str, start);
+    } else {
+        snprintf(query, MAX_QUERY_SIZE, "SUBSTRING(%s FROM %d FOR %d)", str, start, length);
+    }
+};
+
+void dbms_format_substring_query(char *query, char *str, int start, int length, enum DBMS_TYPE dbms)
 {
     char *r_str;
     char *dbms_query;
+    char substring_query[MAX_QUERY_SIZE] = {0};
 
     switch (dbms)
     {
     case DBMS1:
-        dbms_query = DBMS1_substr(query);
+        DBMS1_substr(substring_query, str, start, length);
         break;
 
     case DBMS2:
-        dbms_query = DBMS2_substring(query);
+        DBMS2_substring(substring_query, str, start, length);
         break;
 
     case DBMS3:
-        dbms_query = DBMS3_sbstr(query);
+        DBMS3_sbstr(substring_query, str, start, length);
         break;
 
     default:
-        dbms_query = "NULL";
         break;
     }
 
-    return dbms_query;
+    snprintf(query, MAX_QUERY_SIZE, "%s", substring_query);
 }
